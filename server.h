@@ -18,7 +18,7 @@ public :
 class CList 
 {
     CNode *m_pFirst;
-
+    
 public :
     CList();
     ~CList();
