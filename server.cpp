@@ -21,7 +21,7 @@ CList ::CList()
     m_pFirst = NULL;
 }
 
-CList ::CList()
+CList :: ~CList()
 {
     if (m_pFirst != NULL)
     {
@@ -123,11 +123,86 @@ int CList ::DeleteLast()
 
     return iDelData;
 }
-void CList ::InsertAtPosition(int, int)
+void CList ::InsertAtPosition(int iNo, int iPos)
 {
+    int iCount;
+    iCount = CountNodes();
+
+    if (iPos <= 0 || iPos > iCount + 1)
+    {
+        cout << " Invalid Position - " << iPos << endl;
+        return;
+    }
+
+    if (iPos == 1)
+    {
+        InsertAtFirst(iNo);
+        return;
+    }
+
+    // if (iPos == iCount)
+    // {
+    //     InsertAtLast(iNo);
+    //     return;
+    // }
+
+    CNode *pNewNode = new CNode;        //
+    if(NULL == pNewNode)
+    {
+        cout << " Memory allocation Failed\n";
+        return;
+    }
+    pNewNode->m_iData = iNo;
+
+    iCount = 1;
+    CNode *pTemp = m_pFirst;
+    while (iCount != iPos - 1)
+    {
+        iCount ++;
+        pTemp = pTemp->m_pNext;
+    }
+    pNewNode->m_pNext = pTemp->m_pNext;
+    pTemp->m_pNext = pNewNode;
 }
-int CList ::DeleteAtPosition(int)
+
+int CList ::DeleteAtPosition(int iPos)
 {
+    int iCount = CountNodes();
+
+    if(iPos <= 0 || iPos > iCount + 1)    
+    {
+        cout << "Invalid Position - " << iPos << endl;
+        return -1;
+    }
+
+    if(iPos == 1)
+    {
+        return DeleteFirst();
+    }
+
+    // if(iPos == iCount)
+    // {
+    //     return DeleteLast();
+    // }
+
+    CNode *pTemp1 = m_pFirst;
+    iCount = 1;
+
+    while(iCount < iPos - 1)
+    {
+        iCount ++;
+        pTemp1 = pTemp1->m_pNext;
+    }
+
+    CNode *pTemp2 = pTemp1->m_pNext;
+    iCount = pTemp2->m_iData;
+    pTemp1->m_pNext = pTemp2->m_pNext;
+    pTemp2->m_pNext = NULL;
+    delete pTemp2;
+    pTemp1 = NULL;
+    pTemp2 = NULL;
+
+    return iCount;
 }
 
 int CList ::CountNodes()
@@ -152,7 +227,7 @@ int CList ::SearchFirstOccurance(int iKey)
     while (pTemp != NULL)
     {
         iPosition++;
-        if(pTemp->m_iData == iKey)
+        if (pTemp->m_iData == iKey)
             return iPosition;
         pTemp = pTemp->m_pNext;
     }
@@ -160,7 +235,7 @@ int CList ::SearchFirstOccurance(int iKey)
     return 0;
 }
 
-int CList ::SearchLastOccuarnce(int iKey)
+int CList ::SearchLastOccurance(int iKey)
 {
     int iPosition = 0;
     int iLastPosition;
@@ -169,8 +244,8 @@ int CList ::SearchLastOccuarnce(int iKey)
 
     while (pTemp != NULL)
     {
-        iPosition ++;
-        if(pTemp->m_iData == iKey)
+        iPosition++;
+        if (pTemp->m_iData == iKey)
             iLastPosition = iPosition;
         pTemp = pTemp->m_pNext;
     }
@@ -178,34 +253,99 @@ int CList ::SearchLastOccuarnce(int iKey)
     return iLastPosition;
 }
 
-int CList ::SearchAllOccuarnces(int iKey)
+int CList :: SearchAllOccurances(int iKey)
 {
     int iCount = 0;
 
     CNode *pTemp = m_pFirst;
 
-    while(pTemp != NULL)
+    while (pTemp != NULL)
     {
-        if(iKey == pTemp->m_iData)
-            iCount ++;
+        if (iKey == pTemp->m_iData)
+            iCount++;
         pTemp = pTemp->m_pNext;
     }
 
     return iCount;
 }
 
-void CList ::ConcatLists()
+void CList ::ConcatLists(CList& ref)
 {
-}
-void CList ::ConcatAtPosition()
+    if(ref.m_pFirst == NULL)
+        return;
+    
+    if(m_pFirst == NULL)
+    {
+        m_pFirst = ref.m_pFirst;
+        ref.m_pFirst = NULL;
+        return;
+    }
+
+    CNode *pTemp = m_pFirst;
+
+    while(pTemp->m_pNext != NULL)
+        pTemp = pTemp->m_pNext;
+
+    pTemp->m_pNext = ref.m_pFirst;
+    ref.m_pFirst = NULL;
+}   
+
+void CList ::ConcatAtPosition(CList &ref, int iPos)
 {
+    int iCount= CountNodes();
+
+    if(iPos <= 0 || iPos > iCount + 1)
+    {
+        cout << " Invalid Position - " << iPos << endl;
+        return;
+    }
+
+    if(ref.m_pFirst == NULL)
+        return;
+    
+    if(m_pFirst == NULL)
+    {
+        ref.m_pFirst = m_pFirst;
+        ref.m_pFirst = NULL;
+        return;
+    }
+
+    if(iPos == 1)
+    {
+        ConcatLists(ref);
+        return;
+    }
+
+    // if(iPos == iCount + 1)
+    // {
+    //     ConcatLists(pSecond);
+    // }
+
+    CNode *pTemp1 = m_pFirst;
+    iCount = 1;
+    while(iCount < iPos - 1)
+    {
+        iCount++;
+        pTemp1 = pTemp1->m_pNext;
+    }
+
+    CNode *pTemp2 = ref.m_pFirst;
+    while(pTemp2->m_pNext != NULL)
+        pTemp2 = pTemp2->m_pNext;
+
+    pTemp2->m_pNext = pTemp1->m_pNext;
+    pTemp1->m_pNext = ref.m_pFirst;
+    ref.m_pFirst = NULL;
 }
 
 void CList ::Display()
 {
     CNode *pTemp = m_pFirst;
 
-    while(pTemp != NULL)
+    if(m_pFirst == NULL)
+        cout << " List is Empty\n";
+
+    while (pTemp != NULL)
     {
         cout << "|" << pTemp->m_iData << "|" << "->";
         pTemp = pTemp->m_pNext;
@@ -215,16 +355,41 @@ void CList ::Display()
 
 void CList ::ReverseDisplay()
 {
+    if(m_pFirst == NULL)
+    {    
+        cout << "|NULL|\n";
+        return ;
+    }
+
+    PhysicalReverse();
+
+    Display();
+
+    PhysicalReverse();
 }
+
 void CList ::PhysicalReverse()
 {
+    CNode *pPrev = NULL;
+    CNode *pCurrent = m_pFirst;
+    CNode *pNext = NULL;
+
+    while(pCurrent != NULL)
+    {
+        pNext = pCurrent->m_pNext;
+        pCurrent->m_pNext = pPrev;
+        pPrev = pCurrent;
+        pCurrent = pNext;
+    }
+
+    m_pFirst = pPrev;
 }
 
 void CList ::DeleteAll()
 {
     CNode *pTemp = NULL;
 
-    while(m_pFirst != NULL)
+    while (m_pFirst != NULL)
     {
         pTemp = m_pFirst;
         m_pFirst = pTemp->m_pNext;

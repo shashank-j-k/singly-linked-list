@@ -30,10 +30,10 @@ public :
     int DeleteAtPosition(int);
     int CountNodes();
     int SearchFirstOccurance(int);
-    int SearchLastOccuarnce(int);
-    int SearchAllOccuarnces(int);
-    void ConcatLists();
-    void ConcatAtPosition();
+    int SearchLastOccurance(int);
+    int SearchAllOccurances(int);
+    void ConcatLists(CList&);
+    void ConcatAtPosition(CList&, int);
     void Display();
     void ReverseDisplay();
     void PhysicalReverse();
