@@ -30,7 +30,7 @@ int main()
 
     iData = oList1.DeleteFirst();
     if (iData != -1)
-        printf("Deleted Data is %d\n", iData);     // Deleted Data is 10
+        printf("Deleted Data is %d\n", iData);      // Deleted Data is 10
 
     oList1.Display();                               // |20|->|30|->|20|->|40|->|50|->|60|->|NULL|
 
@@ -59,42 +59,46 @@ int main()
         printf("%d found %d times\n", 20, iData);               // 20 found 2 times
 
     iData = oList1.CountNodes();
-    printf("Total number of nodes = %d\n", iData);             // Toatal number of nodes = 4
+    printf("Total number of nodes = %d\n", iData);              // Toatal number of nodes = 4
 
-    oList1.Display();                                            // |20|->|30|->|20|->|50|->|NULL|                                    
+    oList1.Display();                                           // |20|->|30|->|20|->|50|->|NULL|                                    
 
     oList1.PhysicalReverse();
-    oList1.Display();                                            // |50|->|20|->|30|->|20|->|NULL|
+    oList1.Display();                                           // |50|->|20|->|30|->|20|->|NULL|
     oList1.PhysicalReverse();
-    oList1.Display();                                            // |20|->|30|->|20|->|50|->|NULL|
+    oList1.Display();                                           // |20|->|30|->|20|->|50|->|NULL|
 
     oList1.ReverseDisplay();
-    oList1.Display();                                            // |50|->|20|->|30|->|20|->|NULL|
+    oList1.Display();                                           // |50|->|20|->|30|->|20|->|NULL|
 
     CList oList2;
     oList2.InsertAtLast(100);
     oList2.InsertAtLast(200);
     oList2.Display();                                           // |100|->|200|->|NULL|
     oList1.ConcatLists(oList2);
-    oList1.Display();                                            // |20|->|30|->|20|->|50|->|100|->|200|->|NULL|
+    oList1.Display();                                           // |20|->|30|->|20|->|50|->|100|->|200|->|NULL|
     oList2.Display();                                           // List is Empty
 
     oList2.InsertAtLast(400);
     oList2.InsertAtLast(500);
-    oList1.Display();                                            // |20|->|30|->|20|->|50|->|100|->|200|->|NULL|   
+    oList1.Display();                                           // |20|->|30|->|20|->|50|->|100|->|200|->|NULL|   
     oList2.Display();                                           // |400|->|500|->|NULL|
-    oList2.ConcatAtPosition(oList2, 3);
-    oList1.Display();                                            // |20|->|30|->|400|->|500|->|20|->|50|->|100|->|200|->|NULL|
+    oList1.ConcatAtPosition(oList2, 1);
+    oList1.Display();                                           // |20|->|30|->|400|->|500|->|20|->|50|->|100|->|200|->|NULL|
     oList2.Display();                                           // List is Empty
 
-    // if (pSecond != NULL)
-    // {
-    //     oList2.DeleteAll();
-    //     pSecond = NULL;
-    // }
+    oList1.InsertAtLast(1000);
+    oList1.InsertAtLast(2000);
+    oList1.Display();           
+    oList2.InsertAtLast(33330);
+    oList2.InsertAtLast(22200);
+    oList2.Display();  
 
-    // oList1.Display();                                            // List is Empty
-    // oList2.Display();                                           // List is Empty
+    oList1.DeleteAll();
+    oList2.DeleteAll();
+
+    oList1.Display();                                           // List is Empty
+    oList2.Display();                                           // List is Empty
 
     return 0;
 }
