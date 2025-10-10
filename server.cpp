@@ -290,9 +290,9 @@ void CList ::ConcatLists(CList& ref)
     ref.m_pFirst = NULL;
 }   
 
-void CList ::ConcatAtPosition(CList &ref, int iPos)
+void CList :: ConcatAtPosition(CList &ref, int iPos)
 {
-    int iCount= CountNodes();
+    int iCount = CountNodes();
 
     if(iPos <= 0 || iPos > iCount + 1)
     {
@@ -302,27 +302,24 @@ void CList ::ConcatAtPosition(CList &ref, int iPos)
 
     if(ref.m_pFirst == NULL)
         return;
-    
-    if(m_pFirst == NULL)
-    {
-        ref.m_pFirst = m_pFirst;
-        ref.m_pFirst = NULL;
-        return;
-    }
 
     if(iPos == 1)
     {
+        CNode *pTemp = m_pFirst;
+        m_pFirst = ref.m_pFirst;
+        ref.m_pFirst = pTemp;
+
         ConcatLists(ref);
+
+        ref.m_pFirst = NULL;
+        pTemp = NULL;
+
         return;
     }
 
-    // if(iPos == iCount + 1)
-    // {
-    //     ConcatLists(pSecond);
-    // }
-
     CNode *pTemp1 = m_pFirst;
     iCount = 1;
+
     while(iCount < iPos - 1)
     {
         iCount++;
